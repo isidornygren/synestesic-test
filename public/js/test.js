@@ -151,7 +151,13 @@ function render(canvas){
     ctx.fillText('Level:' + game.level,200,180);
   }
   // Update game info text
-  $('#game-info').text('level: ' + game.level + ', score: ' + game.score + ', next: ' + Math.round((game.timerTime - (new Date() - game.latestUpdate))/100)/10);
+  $('#game-score').text('score: ' + game.score);
+  $('#game-level').text('level: ' + game.level);
+  if(game.play){
+    $('#game-next').text('next: ' + Math.round((game.timerTime - (new Date() - game.latestUpdate))/100)/10);
+  }else{
+    $('#game-next').text('next: nil');
+  }
 }
 
 $(document).ready(function() {

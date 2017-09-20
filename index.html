@@ -20,9 +20,6 @@
   </head>
   <body>
     <div class="container text-center">
-    <div id="header">
-      <h4 class="text-center">Welcome to the testing room</h4>
-    </div>
     <div id="testing" class="mx-auto">
         <div id="testing-controls">
           <div class="left-controls">
@@ -43,10 +40,17 @@
         <canvas id="testing-area" width="512" height="512">
         </canvas>
       <br>
+      <div class="container">
+        <div id="game-info" class="row text-left">
+          <div id="game-score" class="col-md-4">score: 1</div>
+          <div id="game-level" class="col-md-4">level: 1</div>
+          <div id="game-next" class="col-md-4">next: !</div>
+        </div>
+      </div>
+      <br>
       <small id="testing-info">
         x: , y:
       </small>
-      <small id="game-info"></small>
     </div>
   </div>
   <footer class="footer">
