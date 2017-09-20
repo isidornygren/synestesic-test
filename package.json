@@ -1,0 +1,27 @@
+{
+  "name": "project",
+  "version": "0.0.1",
+  "description": "Audio/Visual UX Project for the course Student Conferance in Computing Science at Umeå University 2017",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Umeå",
+    "University",
+    "2017",
+    "UX",
+    "Audio",
+    "Visual",
+    "Interaction",
+    "Test"
+  ],
+  "author": "Karl Isidor Johannes Nygren",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.4",
+    "mocha": "^3.5.3",
+    "pizzicato": "^0.6.1"
+  }
+}

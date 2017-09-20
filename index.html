@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Student Conference Project</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="css/main.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800">
+    <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.1/Pizzicato.min.js"></script>
+    <script src="js/test.js"></script>
+  </head>
+  <body>
+    <div class="container text-center">
+    <div id="header">
+      <h3 class="text-center">Welcome to the testing room</h3>
+    </div>
+    <div id="testing" class="mx-auto">
+        <div id="testing-controls">
+          <div class="left-controls">
+            <div class="btn-group">
+              <button type="button" id="button-add" class="btn btn-secondary">+</button>
+              <button type="button" id="button-sub" class="btn btn-secondary">-</button>
+            </div>
+            <button type="button" id="button-clear" class="btn btn-danger">clear</button>
+            <button type="button" id="button-rand" class="btn btn-primary">randomize</button>
+            <button type="button" id="button-play" class="btn btn-outline-success">play</button>
+          </div>
+          <div class="right-controls">
+            <i id="volume-icon" class="fa fa-volume-up"></i>
+            <input id="vol-slider" type="range" min="0" max="1" step="0.01" value="1"/>
+          </div>
+        </div>
+        <br>
+        <canvas id="testing-area" width="512" height="512">
+        </canvas>
+      <br>
+      <small id="testing-info">
+        x: , y:
+      </small>
+      <small id="game-info"></small>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col text-center">
+          <small class="text-center">Written by <strong><a href="mailto:karlisidornygren@gmail.com">Isidor Nygren</a></strong>
+          For the course Student Conference in Computing Science at Umeå University 2017</small>
+        </div>
+      </div>
+    </div>
+  </footer>
+  </body>
+</html>
