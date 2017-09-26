@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include ../partials/head %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.1/Pizzicato.min.js"></script>
+    <script src="js/test.js"></script>
+  </head>
+  <body>
+    <% include ../partials/header %>
+    <div class="container text-center">
+    <div id="testing" class="mx-auto">
+        <div id="testing-controls">
+          <div class="left-controls">
+            <div class="btn-group">
+              <button type="button" id="button-add" class="btn btn-secondary">+</button>
+              <button type="button" id="button-sub" class="btn btn-secondary">-</button>
+            </div>
+            <button type="button" id="button-clear" class="btn btn-danger">clear</button>
+            <button type="button" id="button-rand" class="btn btn-primary">randomize</button>
+            <button type="button" id="button-play" class="btn btn-outline-success">play</button>
+          </div>
+          <div class="right-controls">
+            <i id="volume-icon" class="fa fa-volume-up"></i>
+            <input id="vol-slider" type="range" min="0" max="1" step="0.01" value="1"/>
+          </div>
+        </div>
+        <br>
+        <canvas id="testing-area" width="512" height="512">
+        </canvas>
+      <br>
+      <div class="container">
+        <div id="game-info" class="row text-left">
+          <div id="game-score" class="col-md-4">score: 1</div>
+          <div id="game-level" class="col-md-4">level: 1</div>
+          <div id="game-next" class="col-md-4">next: !</div>
+        </div>
+      </div>
+      <br>
+      <small id="testing-info">
+        x: , y:
+      </small>
+    </div>
+  </div>
+  <% include ../partials/footer %>
+  </body>
+</html>

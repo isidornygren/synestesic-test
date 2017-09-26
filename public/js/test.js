@@ -22,6 +22,11 @@ var game = {
   }
 }
 
+// Enable navigation prompt
+window.onbeforeunload = function() {
+    return true;
+};
+
 function createButton(canvas, message, x, y, sound){
   var button = {
     x: x,
