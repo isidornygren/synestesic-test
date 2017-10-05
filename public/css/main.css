@@ -7,10 +7,16 @@ body {
   position: relative;
   margin: 0;
   padding-bottom: 6rem;
+  font-family: 'Nunito', sans-serif;
 }
 #header{
   margin:1rem;
-  color:#555;
+}
+#jumbotron-main{
+  background-color:#FFF;
+  background-image: url("../img/stock_photo.jpg");
+  background-size:cover;
+  border: .05rem solid #e5e5e5;
 }
 .footer {
   position: absolute;
