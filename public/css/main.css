@@ -18,6 +18,13 @@ body {
   background-size:cover;
   border: .05rem solid #e5e5e5;
 }
+#test-info-box{
+  position:absolute;
+  top:0;
+  left:0;
+  text-align:left;
+  font-size:75%;
+}
 .footer {
   position: absolute;
   right: 0;
