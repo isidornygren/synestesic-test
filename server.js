@@ -90,7 +90,7 @@ router.route('testinstance')
           if(err){
             res.send(err);
           }else{
-            console.log('found user:' + user_test.ip + ':' + user_test.country + ':' user_test.birthyear + ':' + user_test.sex + ':' user_test.token);
+            console.log('found user:' + user_test.ip + ':' + user_test.country + ':' + user_test.birthyear + ':' + user_test.sex + ':' + user_test.token);
             test._user_test = user_test._id;
             test.test_num = req.body.test_num;
             test.test_seq = req.body.test_seq;
