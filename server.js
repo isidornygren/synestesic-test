@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 var port = 8080;
 
 //Set up default mongoose connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/testing_db');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/testing_db', { useMongoClient: true });
 
 //Get the default connection
 var db = mongoose.connection;
