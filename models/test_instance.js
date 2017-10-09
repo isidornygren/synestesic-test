@@ -27,7 +27,8 @@ var TestInstanceSchema = new Schema({
   },
   time: {
     type: Number
-  }
+  },
+  _user_test : { type: Schema.Types.ObjectId, ref: 'UserTest' },
 });
 
 module.exports = mongoose.model('TestInstance', TestInstanceSchema);

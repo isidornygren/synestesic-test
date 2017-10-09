@@ -6,6 +6,9 @@ var UserTestSchema = new Schema({
   ip: {
     type: String, // Should store as binary lol
   },
+  token: {
+    type: Number,
+  },
   country: {
     type: String,
   },
