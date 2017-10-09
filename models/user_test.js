@@ -7,7 +7,7 @@ var UserTestSchema = new Schema({
     type: String, // Should store as binary lol
   },
   token: {
-    type: Number,
+    type: String,
   },
   country: {
     type: String,

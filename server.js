@@ -48,7 +48,8 @@ var UserTest = require('./models/user_test');
 // middleware to use for all requests
 router.use(function(req, res, next) {
     // do logging
-    console.log('Something is happening.');
+    console.log('API request:');
+    console.log(JSON.stringify(req.body, 4));
     next(); // make sure we go to the next routes and don't stop here
 });
 router.route('/usertest')
@@ -58,11 +59,13 @@ router.route('/usertest')
      req.connection.remoteAddress ||
      req.socket.remoteAddress ||
      req.connection.socket.remoteAddress;
+    console.log('IP: ' + ip);
     var user_token = jwt.sign({
       data: ip
     }, process.env.SECRET_KEY || 'very_secret_key', { expiresIn: '2h' });
+    console.log('user token: ' + user_token);
     // Save user ip for the future
-    user.ip = ip;
+    //user.ip = ip;
     user.token = user_token;
     user.country = req.body.country;
     user.birthyear = req.body.birthyear;
@@ -75,19 +78,22 @@ router.route('/usertest')
       }
     });
   });
-router.route('testinstance')
+router.route('/testinstance')
   .post(function(req, res){
     var test = new TestInstance();
     // Check the test id
-
-    jwt.verify(req.body.key, process.env.SECRET_KEY || 'very_secret_key', function(err, dec){
+    console.log('New test instance')
+    console.log(req.body.token);
+    jwt.verify(req.body.token, process.env.SECRET_KEY || 'very_secret_key', function(err, decoded){
       if(err){
+        console.log('error' + err);
         res.send(err);
       }else{
         // Key is correct and valid
         console.log(decoded.data);
         UserTest.findById(req.body.id, function(err, user_test){
           if(err){
+            console.log('error' + err);
             res.send(err);
           }else{
             console.log('found user:' + user_test.ip + ':' + user_test.country + ':' + user_test.birthyear + ':' + user_test.sex + ':' + user_test.token);
@@ -95,12 +101,12 @@ router.route('testinstance')
             test.test_num = req.body.test_num;
             test.test_seq = req.body.test_seq;
             test.init_v = {
-              angle: req.body.init_v.angle,
-              force: req.body.init_v.force
+              angle: req.body.init_v_angle,
+              force: req.body.init_v_force
             };
             test.goal_v = {
-              angle: req.body.goal_v.angle,
-              force: req.body.goal_v.force
+              angle: req.body.goal_v_angle,
+              force: req.body.goal_v_force
             };
             test.time = req.body.time;
             test.save(function(err, new_test){
@@ -108,7 +114,7 @@ router.route('testinstance')
                 res.send(err);
               }else{
                 user_test.test_instances.push(new_test);
-                res.json({message: 'test instance saved.'})
+                res.json({message: 'test instance saved.', id: new_test._id})
               }
             });
           }
