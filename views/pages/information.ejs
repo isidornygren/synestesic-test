@@ -3,13 +3,33 @@
   <head>
     <% include ../partials/head %>
   </head>
+  <script>
+  // Form submission code
+    function validateForm(){
+      var elements = document.getElementById("info-form").elements;
+      var form ={};
+      for(var i = 0 ; i < elements.length ; i++){
+          var item = elements.item(i);
+          form[item.name] = item.value;
+      }
+      document.getElementById("demo").innerHTML = JSON.stringify(form);
+      if(form.birthyear == '' || !isNan(form.birthyear) || form.sexRadio == ''){
+        alert('You have to put in a birth year')
+      }else{
+        //validating success
+        $.post( "api/usertest", function( data ) {
+          $( ".result" ).html( data );
+        });
+      }
+    }
+  </script>
   <body>
     <% include ../partials/header %>
     <div class="container container-narrow">
       <div class="heading text-center">
         <p class="lead">To carry on to the test you need to enter some information about yourself.</p>
       </div>
-      <form class="content">
+      <form class="content" id="info-form">
         <div class="form-group row">
           <label class="col-2 col-form-label" for="sexSelect">Sex</label>
           <div class="col-10">
@@ -26,13 +46,13 @@
         <div class="form-group row">
           <label class="col-2 col-form-label" for="ageSelect">Birth year</label>
           <div class="col-10">
-            <input class="form-control" type="number">
+            <input class="form-control" name="birthyear" type="number">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-2 col-form-label" for="countrySelect">Country</label>
           <div class="col-10">
-            <select class="form-control" id="countrySelect">
+            <select class="form-control" id="countrySelect" name="country">
               <option value="AF">Afghanistan</option>
             	<option value="AX">Åland Islands</option>
             	<option value="AL">Albania</option>
@@ -285,8 +305,9 @@
             </select>
           </div>
         </div>
-        <a href="/test" class="btn btn-primary">Take me to the test</a>
+        <p onclick='validateForm()' class="btn btn-primary">Submit form</p>
       </form>
+      <div id="demo"></div>
       <div class="row">
         <div class="col">
         <small>By continuing you accept that your ip may be recorded for the test, no other personal information will be saved other then the information given above, as well as your performance in the test that will be saved and stored in a database.</small>

@@ -6,6 +6,8 @@ var path = require('path');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
+var CronJob = require('cron').CronJob;
+var mongoXlsx = require('mongo-xlsx');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -127,3 +129,29 @@ app.use('/api', router);
 
 app.listen(port);
 console.log("Express now listening on port " + port);
+
+// Cron job for converting the database to excel format
+// Runs every hour (ss mm hh dd mm w)
+var job = new CronJob({
+  cronTime: '* * * * * *',
+  onTick: function() {
+    console.log(new Date() + ': Doing the excel job');
+    // generate the new excel data
+    /* Generate automatic model for processing (A static model should be used) */
+    var data = TestInstance.find({}, function(err, usertests){
+      if(err){
+        console.log(err);
+      }else{
+        var model = mongoXlsx.buildDynamicModel(usertests);
+
+        /* Generate Excel */
+        mongoXlsx.mongoData2Xlsx(usertests, model, {fileName: 'exported_data.xlsx', path: 'public/exports/'}, function(err, data) {
+          console.log(new Date() + ': File saved at:', data.fullPath);
+        });
+      }
+    });
+  },
+  start: true, /* Start the job right now */
+  timeZone: 'Europe/Stockholm'
+});
+job.start();
