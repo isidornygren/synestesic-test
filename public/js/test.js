@@ -192,7 +192,6 @@ window.onbeforeunload = function() {
 
 $(document).ready(function() {
   // Get the token
-  $('#token').text('token: ' + user_token + '. id: ' + user_id);
   // Get the main testing canvas
   var canvas = document.getElementById('testing-area');
 
@@ -539,8 +538,6 @@ $(document).ready(function() {
   canvas.addEventListener('mousemove', function(evt) {
     var mousePos = getMousePos(canvas, evt);
     checkButtonHover(mousePos.x, mousePos.y);
-    var message = 'Mouse position: x: ' + mousePos.x + ', y: ' + mousePos.y;
-    $('#testing-info').text(message);
   }, false);
 
   // Mouse press listener
