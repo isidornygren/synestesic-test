@@ -170,12 +170,6 @@ function postTest(test){
       console.log(JSON.stringify(status));
       console.log(JSON.stringify(jqXHR));
       //window.location.href = '/test?token=' + data.key;
-      var score = game.score;
-      var level = game.level;
-      clearButtons();
-      game.lost = true;
-      game.lose_sound.play();
-      //TODO maybe redirect to a thanks for completion page?
     },
     error: function (jqXHR, status) {
         // error handler
@@ -259,6 +253,12 @@ $(document).ready(function() {
               angle_dif: test_results.vector_angle_dif_tot/test_instance.seq,
             }
             postTest(data);
+            // End the game
+            game.lost = true;
+            game.play = false;
+            //game.reset();
+            $("#button-play").html("play");
+
           }else{
             setTimeout(gametick, game.timerTime)
           }
@@ -429,8 +429,9 @@ $(document).ready(function() {
       ctx.font = "30px Arial";
       ctx.fillText('Well done!',200,120);
       ctx.font = "22px Arial";
-      ctx.fillText('Score:' + game.score,200,160);
-      ctx.fillText('Level:' + game.level,200,180);
+      ctx.fillText('Mean reaction time: ' + (test_results.time_until_move_tot/test_instance.seq).toFixed(2) + 'ms',150,160);
+      ctx.fillText('Mean angular difference: ' + (test_results.vector_angle_dif_tot/test_instance.seq).toFixed(2) + ' radians',100,190);
+      ctx.fillText('Try again?',200,240);
     }
     // Update game info text
     $('#game-score').text('score: ' + game.score);
@@ -506,6 +507,14 @@ $(document).ready(function() {
         randomButton(canvas);
     }
   });
+
+  // Just start the test on html enter
+  clearButtons();
+  $("#button-play").html("stop");
+  // Engage play mode
+  game.play = true;
+  test_instance.seq = 0;
+  setTimeout(gametick, game.timerTime);
 
   $("#button-play").click(function() {
     //clearButtons();
