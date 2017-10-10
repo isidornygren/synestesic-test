@@ -12,14 +12,29 @@
           var item = elements.item(i);
           form[item.name] = item.value;
       }
+      // birthyear sex country
       document.getElementById("demo").innerHTML = JSON.stringify(form);
-      if(form.birthyear == '' || !isNan(form.birthyear) || form.sexRadio == ''){
+      //TODO do some more validation here
+      if(form.birthyear == '' || isNaN(form.birthyear) || form.sexRadio == ''){
         alert('You have to put in a birth year')
       }else{
         //validating success
-        $.post( "api/usertest", function( data ) {
-          $( ".result" ).html( data );
-        });
+        $.ajax({
+          type: "POST",
+          url: 'http://' + window.location.host + "/api/usertest",
+          data: JSON.stringify(form),
+          contentType: "application/json; charset=utf-8",
+          crossDomain: true,
+          dataType: "json",
+          success: function (data, status, jqXHR) {
+            window.location.href = '/test?token=' + data.key + '&id=' + data.id;
+          },
+          error: function (jqXHR, status) {
+              // error handler
+              console.log(jqXHR);
+              alert('Error' + status.code + ':' + status.body);
+          }
+       });
       }
     }
   </script>
@@ -34,11 +49,11 @@
           <label class="col-2 col-form-label" for="sexSelect">Sex</label>
           <div class="col-10">
             <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="sexRadio" id="sexMale" value="male">
+              <input type="radio" class="form-check-input" name="sex" id="sexMale" value="male">
               Male
             </label>
             <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="sexRadio" id="sexFemale" value="female">
+              <input type="radio" class="form-check-input" name="sex" id="sexFemale" value="female">
               Female
             </label>
           </div>

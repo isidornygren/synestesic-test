@@ -9,6 +9,9 @@ var TestInstanceSchema = new Schema({
   test_seq: {
     type: Number,
   },
+  init_dist: {
+    type: Number
+  },
   init_v: {
     angle: {
       type:Number
@@ -26,6 +29,15 @@ var TestInstanceSchema = new Schema({
     },
   },
   time: {
+    type: Number
+  },
+  time_til_move: {
+    type: Number
+  },
+  travel_time: {
+    type: Number
+  },
+  angle_dif: {
     type: Number
   },
   _user_test : { type: Schema.Types.ObjectId, ref: 'UserTest' },

@@ -2,6 +2,8 @@ var buttons = [];
 var vol = 1;
 var play = false;
 var playTimer;
+var totSeq = 10;
+
 var game = {
   play: false,
   playTimer: null,
@@ -140,6 +142,48 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
     ctx.fill();
   }
 }
+//https://css-tricks.com/snippets/javascript/get-url-variables/
+function getQueryVariable(variable){
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+
+var user_token = getQueryVariable('token');
+var user_id = getQueryVariable('id');
+
+function postTest(test){
+  $.ajax({
+    type: "POST",
+    url: 'http://' + window.location.host + "/api/testinstance",
+    data: JSON.stringify(test),
+    contentType: "application/json; charset=utf-8",
+    crossDomain: true,
+    dataType: "json",
+    success: function (data, status, jqXHR) {
+      console.log('AJAX POST SUCCESS')
+      console.log(JSON.stringify(data));
+      console.log(JSON.stringify(status));
+      console.log(JSON.stringify(jqXHR));
+      //window.location.href = '/test?token=' + data.key;
+      var score = game.score;
+      var level = game.level;
+      clearButtons();
+      game.lost = true;
+      game.lose_sound.play();
+      //TODO maybe redirect to a thanks for completion page?
+    },
+    error: function (jqXHR, status) {
+        // error handler
+        console.log(jqXHR);
+        alert('Error' + status.code + ':' + status.body);
+    }
+ });
+}
 
 // Enable navigation prompt
 window.onbeforeunload = function() {
@@ -147,7 +191,8 @@ window.onbeforeunload = function() {
 };
 
 $(document).ready(function() {
-
+  // Get the token
+  $('#token').text('token: ' + user_token + '. id: ' + user_id);
   // Get the main testing canvas
   var canvas = document.getElementById('testing-area');
 
@@ -197,7 +242,27 @@ $(document).ready(function() {
           test_results.init_distance_tot      = test_results.init_distance_tot + test_instance.mouse.init_cul;
           test_results.init_vector_force_tot  = test_results.init_vector_force_tot + test_instance.init_v.force;
           test_results.vector_angle_dif_tot   = test_results.vector_angle_dif_tot + Math.min((2 * Math.PI) - Math.abs(start_angle - test_instance.init_v.angle), Math.abs(start_angle - test_instance.init_v.angle));
-          setTimeout(gametick, game.timerTime)
+          // If the player has played enough buttons already
+          if(test_instance.seq >= totSeq){
+            var data = {
+              id: user_id,
+              token: user_token,
+              test_num: 1,
+              test_seq: 1,
+              init_dist: test_results.init_distance_tot/test_instance.seq,
+              init_v_angle: 1,
+              init_v_force: test_results.init_vector_force_tot/test_instance.seq,
+              goal_v_angle: 1,
+              goal_v_force: 1,
+              time: test_results.total_time_tot/test_instance.seq,
+              time_til_move: test_results.time_until_move_tot/test_instance.seq,
+              travel_time: test_results.travel_time_tot/test_instance.seq,
+              angle_dif: test_results.vector_angle_dif_tot/test_instance.seq,
+            }
+            postTest(data);
+          }else{
+            setTimeout(gametick, game.timerTime)
+          }
         }
         this.success.play();
         this.remove(index);

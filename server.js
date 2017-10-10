@@ -110,6 +110,10 @@ router.route('/testinstance')
               angle: req.body.goal_v_angle,
               force: req.body.goal_v_force
             };
+            test.init_dist = req.body.init_dist;
+            test.time_til_move = req.body.time_til_move;
+            test.travel_time = req.body.travel_time;
+            test.angle_dif = req.body.angle_dif;
             test.time = req.body.time;
             test.save(function(err, new_test){
               if(err){
@@ -133,7 +137,7 @@ console.log("Express now listening on port " + port);
 // Cron job for converting the database to excel format
 // Runs every hour (ss mm hh dd mm w)
 var job = new CronJob({
-  cronTime: '00 00 * * * *',
+  cronTime: '00 * * * * *',
   onTick: function() {
     console.log(new Date() + ': Doing the excel job');
     // generate the new excel data
