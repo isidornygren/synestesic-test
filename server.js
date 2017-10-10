@@ -133,7 +133,7 @@ console.log("Express now listening on port " + port);
 // Cron job for converting the database to excel format
 // Runs every hour (ss mm hh dd mm w)
 var job = new CronJob({
-  cronTime: '* * * * * *',
+  cronTime: '00 00 * * * *',
   onTick: function() {
     console.log(new Date() + ': Doing the excel job');
     // generate the new excel data
