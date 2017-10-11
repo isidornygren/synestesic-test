@@ -11,6 +11,7 @@ var game = {
   level: 0,
   score: 0,
   latestUpdate: 0,
+  num: Math.floor(Math.random() * 2),
   clicked: 0,
   lost: false,
   timer: true,
@@ -18,6 +19,7 @@ var game = {
   lose_sound: new Pizzicato.Sound('../sound/lose.wav'),
   reset: function(){
     this.timerTime = 1000;
+    this.num = Math.floor(Math.random() * 2);
     this.level = 0;
     this.lost = false;
     this.score = 0;
@@ -234,7 +236,7 @@ $(document).ready(function() {
       score: 10,
       hover:false,
       press:false,
-      hasSoung: sound,
+      hasSound: sound,
       test: isTest,
       success: new Pizzicato.Sound('../sound/success.wav'),
       onPress: onPressFunc || function(index){
@@ -256,13 +258,13 @@ $(document).ready(function() {
             var data = {
               id: user_id,
               token: user_token,
-              test_num: 1,
-              test_seq: 1,
+              test_num: game.num,
+              //test_seq: 1,
               init_dist: test_results.init_distance_tot/test_instance.seq,
-              init_v_angle: 1,
+              //init_v_angle: 1,
               init_v_force: test_results.init_vector_force_tot/test_instance.seq,
-              goal_v_angle: 1,
-              goal_v_force: 1,
+              //goal_v_angle: 1,
+              //goal_v_force: 1,
               time: test_results.total_time_tot/test_instance.seq,
               time_til_move: test_results.time_until_move_tot/test_instance.seq,
               travel_time: test_results.travel_time_tot/test_instance.seq,
@@ -285,7 +287,9 @@ $(document).ready(function() {
       },
       remove: function(index){
         clearInterval(this.timer);
-        this.sound.stop();
+        if(this.hasSound){
+          this.sound.stop();
+        }
         if(game.play){
           game.score = game.score + this.score + game.level;
           game.clicked = game.clicked + 1;
@@ -362,7 +366,11 @@ $(document).ready(function() {
     var x = Math.floor(Math.random()*14)*32; // 16 - 3 (width)
     var y = Math.floor(Math.random()*16)*32; // 16 - 1 (height)
     //console.log('x: ' + x + ', y: ' + y)
-    createButton(canvas, "Press Me", x, y, true, false);
+    if(game.num == 0){
+      createButton(canvas, "Press Me", x, y, false, false);
+    }else if(game.num == 1){
+      createButton(canvas, "Press Me", x, y, true, false);
+    }
   }
 
   function getMousePos(canvas, evt) {
@@ -419,7 +427,7 @@ $(document).ready(function() {
     test_instance.start_pos.x = test_instance.mouse.last.x;
     test_instance.start_pos.y = test_instance.mouse.last.y;
     test_instance.init_v.done = false;
-    test_instance.end_pos = testButton(num, canvas);
+    test_instance.end_pos = testButton(game.num, canvas);
     test_instance.distance = Math.sqrt(Math.pow(test_instance.end_pos.x - test_instance.start_pos.x,2) + Math.pow(test_instance.end_pos.y - test_instance.start_pos.y, 2));
 
   }
