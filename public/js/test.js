@@ -2,7 +2,7 @@ var buttons = [];
 var vol = 1;
 var play = false;
 var playTimer;
-var totSeq = 10;
+var totSeq = 15;
 
 var game = {
   play: false,
@@ -13,14 +13,18 @@ var game = {
   latestUpdate: 0,
   clicked: 0,
   lost: false,
+  timer: true,
+  timer_start: new Date(),
   lose_sound: new Pizzicato.Sound('../sound/lose.wav'),
   reset: function(){
-    this.timerTime = 2000;
+    this.timerTime = 1000;
     this.level = 0;
     this.lost = false;
     this.score = 0;
     this.latestUpdate = 0;
     this.clicked = 0;
+    this.timer = true;
+    this.timer_start = new Date();
   }
 }
 var test_instance = {
@@ -208,7 +212,18 @@ $(document).ready(function() {
     }
   }
 
-  function createButton(canvas, message, x, y, sound, isTest){
+  function resetTest(){
+    clearButtons();
+    test_instance.reset();
+    game.reset();
+    $("#button-play").html("stop");
+    // Engage play mode
+    //game.play = true;
+    test_instance.seq = 0;
+    //setTimeout(gametick, game.timerTime);
+  }
+
+  function createButton(canvas, message, x, y, sound, isTest, onPressFunc){
     var button = {
       x: x,
       y: y,
@@ -219,9 +234,10 @@ $(document).ready(function() {
       score: 10,
       hover:false,
       press:false,
+      hasSoung: sound,
       test: isTest,
       success: new Pizzicato.Sound('../sound/success.wav'),
-      onPress: function(index){
+      onPress: onPressFunc || function(index){
         // The button is part of the test
         if(this.test){
           test_instance.finished = true;
@@ -258,6 +274,7 @@ $(document).ready(function() {
             game.play = false;
             //game.reset();
             $("#button-play").html("play");
+            createButton(canvas, 'Play again', 200, 250, false, isTest, resetTest)
 
           }else{
             setTimeout(gametick, game.timerTime)
@@ -304,7 +321,9 @@ $(document).ready(function() {
   function clearButtons(){
     buttons.forEach(function(button) {
       clearInterval(button.timer);
-      button.sound.stop();
+      if(button.hasSound){
+        button.sound.stop();
+      }
     });
     buttons = [];
   }
@@ -427,19 +446,32 @@ $(document).ready(function() {
     if(game.lost){
       ctx.fillStyle = 'black';
       ctx.font = "30px Arial";
-      ctx.fillText('Well done!',200,120);
+      ctx.fillText('Well done!',190,120);
       ctx.font = "22px Arial";
-      ctx.fillText('Mean reaction time: ' + (test_results.time_until_move_tot/test_instance.seq).toFixed(2) + 'ms',150,160);
-      ctx.fillText('Mean angular difference: ' + (test_results.vector_angle_dif_tot/test_instance.seq).toFixed(2) + ' radians',100,190);
-      ctx.fillText('Try again?',200,240);
+      ctx.fillText('Mean reaction time: ' + (test_results.time_until_move_tot/test_instance.seq).toFixed(2) + 'ms',130,160);
+      ctx.fillText('Mean angular difference: ' + (test_results.vector_angle_dif_tot/test_instance.seq).toFixed(2) + ' radians',80,190);
     }
-    // Update game info text
-    $('#game-score').text('score: ' + game.score);
-    $('#game-level').text('level: ' + game.level);
-    if(game.play){
-      $('#game-next').text('next: ' + Math.round((game.timerTime - (new Date() - game.latestUpdate))/100)/10);
-    }else{
-      $('#game-next').text('next: nil');
+    if(game.timer){
+      if(new Date().getTime() > (game.timer_start.getTime() + 5000)){
+        // Just start the test on html enter
+        game.timer = false;
+        clearButtons();
+        $("#button-play").html("stop");
+        // Engage play mode
+        game.play = true;
+        test_instance.seq = 0;
+        setTimeout(gametick, game.timerTime);
+      }else{
+        ctx.fillStyle = 'black';
+        ctx.font = "40px Arial";
+        ctx.fillText('Game starts in',125,200);
+        ctx.font = "30px Arial";
+        ctx.fillText(((game.timer_start.getTime() + 5000) - new Date().getTime())/1000,170,250);
+        ctx.fillText('seconds',255,250);
+
+        ctx.font = "20px Arial";
+        ctx.fillText('Try to press the buttons as fast as possible',70,290);
+      }
     }
     var start_angle = Math.atan2(test_instance.end_pos.y - test_instance.start_pos.y, test_instance.end_pos.y - test_instance.start_pos.x) //TODO don't do these calculations all the time
     var obj = $('#test-info-box').text('id:' + test_instance.id +
@@ -507,14 +539,6 @@ $(document).ready(function() {
         randomButton(canvas);
     }
   });
-
-  // Just start the test on html enter
-  clearButtons();
-  $("#button-play").html("stop");
-  // Engage play mode
-  game.play = true;
-  test_instance.seq = 0;
-  setTimeout(gametick, game.timerTime);
 
   $("#button-play").click(function() {
     //clearButtons();

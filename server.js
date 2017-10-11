@@ -100,7 +100,7 @@ router.route('/testinstance')
             res.send(err);
           }else{
             console.log('found user:' + user_test.ip + ':' + user_test.country + ':' + user_test.birthyear + ':' + user_test.sex + ':' + user_test.token);
-            test._user_test = user_test._id;
+            test._user_test = user_test;
             test.test_num = req.body.test_num;
             test.test_seq = req.body.test_seq;
             test.init_v = {
@@ -138,7 +138,7 @@ console.log("Express now listening on port " + port);
 // Cron job for converting the database to excel format
 // Runs every hour (ss mm hh dd mm w)
 var job = new CronJob({
-  cronTime: '00 00 * * * *',
+  cronTime: '00 * * * * *',
   onTick: function() {
     console.log(new Date() + ': Doing the excel job');
     // generate the new excel data
@@ -148,13 +148,16 @@ var job = new CronJob({
         console.log(err);
       }else{
         var model = mongoXlsx.buildDynamicModel(usertests);
-
+        console.log('have built the model')
+        usertests.forEach(function(test){
+          //console.log(JSON.stringify(test, null, 4))
+        })
         /* Generate Excel */
         mongoXlsx.mongoData2Xlsx(usertests, model, {fileName: 'exported_data.xlsx', path: 'public/exports/'}, function(err, data) {
           console.log(new Date() + ': File saved at:', data.fullPath);
         });
       }
-    });
+    }).populate('_user_test');
   },
   start: true, /* Start the job right now */
   timeZone: 'Europe/Stockholm'
