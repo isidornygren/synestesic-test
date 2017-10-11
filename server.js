@@ -72,6 +72,7 @@ router.route('/usertest')
     user.country = req.body.country;
     user.birthyear = req.body.birthyear;
     user.sex = req.body.sex;
+    user.input = req.body.input;
     user.save(function(err, new_user){
       if(err){
         res.send(err);

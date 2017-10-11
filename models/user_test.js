@@ -18,6 +18,9 @@ var UserTestSchema = new Schema({
   sex: {
     type: String, // male/female as to not push too many buttons
   },
+  input: {
+    type: String,
+  },
   test_instances : [{ type: Schema.Types.ObjectId, ref: 'TestInstance' }]
 });
 
