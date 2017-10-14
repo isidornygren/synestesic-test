@@ -394,7 +394,9 @@ $(document).ready(function() {
           test_instance.init_v.done = true;
           test_instance.init_v.angle = Math.atan2(cur_y - test_instance.start_pos.y, cur_x - test_instance.start_pos.x);
           // Force is just the traveled way towards the current goal
-          test_instance.init_v.force = Math.sqrt(Math.pow(cur_x - test_instance.start_pos.x,2) + Math.pow(cur_y - test_instance.start_pos.y, 2))/(new Date() - test_instance.init_time);
+          var time_dif = (new Date() - test_instance.init_time);
+          if(time_dif <= 0){time_dif = 0.01} // failsafe to not divide by zero
+          test_instance.init_v.force = Math.sqrt(Math.pow(cur_x - test_instance.start_pos.x,2) + Math.pow(cur_y - test_instance.start_pos.y, 2))/(time_dif);
         }
       }
     }
