@@ -23,7 +23,7 @@
         //validating success
         $.ajax({
           type: "POST",
-          url: 'http://' + window.location.host + "/api/usertest",
+          url: window.location.protocol + '//' + window.location.host + "/api/usertest",
           data: JSON.stringify(form),
           contentType: "application/json; charset=utf-8",
           crossDomain: true,
