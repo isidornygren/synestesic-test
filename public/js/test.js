@@ -165,7 +165,7 @@ var user_id = getQueryVariable('id');
 function postTest(test){
   $.ajax({
     type: "POST",
-    url: 'http://' + window.location.host + "/api/testinstance",
+    url: window.location.protocol + '//' + window.location.host + "/api/testinstance",
     data: JSON.stringify(test),
     contentType: "application/json; charset=utf-8",
     crossDomain: true,
