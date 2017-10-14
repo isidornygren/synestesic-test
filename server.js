@@ -14,7 +14,7 @@ var mongoXlsx = require('mongo-xlsx');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var port = 8080;
+var port = process.env.PORT || 8080;
 
 //Set up default mongoose connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/testing_db', { useMongoClient: true });
