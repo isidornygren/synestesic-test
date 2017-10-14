@@ -13,7 +13,13 @@
       var form ={};
       for(var i = 0 ; i < elements.length ; i++){
           var item = elements.item(i);
-          form[item.name] = item.value;
+          if(item.name == "sex"){
+            if(item.checked){
+              form[item.name] = item.value;
+            }
+          }else{
+            form[item.name] = item.value;
+          }
       }
       // birthyear sex country
       //TODO do some more validation here
