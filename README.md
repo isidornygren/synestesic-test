@@ -8,4 +8,6 @@ A Project created for the course [Student conference in Computing Science](https
 * run `npm install` in the project folder
 * run `npm start` to start the server
 ---
+[Heroku hosting](https://student-conference-project.herokuapp.com/)
+---
 License: [MIT](https://opensource.org/licenses/MIT)
