@@ -171,10 +171,6 @@ function postTest(test){
     crossDomain: true,
     dataType: "json",
     success: function (data, status, jqXHR) {
-      console.log('AJAX POST SUCCESS')
-      console.log(JSON.stringify(data));
-      console.log(JSON.stringify(status));
-      console.log(JSON.stringify(jqXHR));
       //window.location.href = '/test?token=' + data.key;
     },
     error: function (jqXHR, status) {
