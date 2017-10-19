@@ -22,7 +22,7 @@ var data = TestInstance.find({}, function(err, usertests){
     var model = mongoXlsx.buildDynamicModel(usertests);
     mongoXlsx.mongoData2Xlsx(usertests, model, {fileName: 'exported_data.xlsx', path: 'public/exports/'}, function(err, data) {
       if(err){
-        console.log('Error exporting data: ' + err)
+        console.log('Error exporting data: ' + err);
       }else{
         console.log('Exporting finished. File saved at:', data.fullPath);
       }
