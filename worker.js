@@ -5,10 +5,6 @@ var mongoXlsx = require('mongo-xlsx');
 var mongoose = require('mongoose');
 
 // Connect to the database
-//mongoose.Promise = global.Promise;
-//mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/testing_db', { useMongoClient: true });
-//var db = mongoose.connection;
-//db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var database = require('./models/database.js');
 database();
 var TestInstance = mongoose.model('TestInstance')
@@ -25,7 +21,11 @@ var data = TestInstance.find({}, function(err, usertests){
   }else{
     var model = mongoXlsx.buildDynamicModel(usertests);
     mongoXlsx.mongoData2Xlsx(usertests, model, {fileName: 'exported_data.xlsx', path: 'public/exports/'}, function(err, data) {
-      console.log('Exporting finished. File saved at:', data.fullPath);
+      if(err){
+        console.log('Error exporting data: ' + err)
+      }else{
+        console.log('Exporting finished. File saved at:', data.fullPath);
+      }
       // The worker is finished
       process.exit();
     });
