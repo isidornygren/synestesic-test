@@ -3,13 +3,14 @@
 var CronJob = require('cron').CronJob;
 var mongoXlsx = require('mongo-xlsx');
 var mongoose = require('mongoose');
+const prettyBytes = require('pretty-bytes');
 
 // Connect to the database
 var database = require('./models/database.js');
 database();
 var TestInstance = mongoose.model('TestInstance')
 var UserTest = mongoose.model('UserTest')
-
+var fs = require('fs');
 
 console.log('Exporting the database as an excel file');
 // generate the new excel data
@@ -24,10 +25,18 @@ var data = TestInstance.find({}, function(err, usertests){
       if(err){
         console.log('Error exporting data: ' + err);
       }else{
-        console.log('Exporting finished. File saved at:', data.fullPath);
+        console.log('Exporting finished. File saved at:', data.fullPath, prettyBytes(data.size));
+        fs.exists(data.fullPath, function(exists){
+          if(exists){
+            console.log('Found exported file.');
+            process.exit();
+          }else{
+            console.log('Could not find exported file.');
+            process.exit();
+          }
+        });
       }
       // The worker is finished
-      process.exit();
     });
   }
 }).populate('_user_test');

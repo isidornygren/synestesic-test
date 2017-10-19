@@ -31,6 +31,7 @@
     "moment": "^2.18.1",
     "mongo-xlsx": "https://github.com/isidornygren/mongo-xlsx/tarball/901d4ea07f315160d8b038adad5c090b6f5d071b",
     "mongoose": "^4.11.13",
-    "pizzicato": "^0.6.1"
+    "pizzicato": "^0.6.1",
+    "pretty-bytes": "^4.0.2"
   }
 }
